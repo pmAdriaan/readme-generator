@@ -55,23 +55,25 @@ const questions = [
 
 // function to write README file
 function writeToFile(fileName, data) {
-}
+    fs.writeFile(fileName, data, (err) => {
+      if (err) {
+        console.error("Error writing to file:", err);
+      } else {
+        console.log("README.md successfully generated!");
+      }
+    });
+  }
 
 // function to initialize program
 function init() {
     inquirer
-        .prompt([
-            /* Pass your questions in here */
-        ])
+        .prompt(questions)
         .then((answers) => {
-            // Use user feedback for... whatever!!
+            const readmeContent = generateMarkdown(answers);
+            writeToFile("README.md", readmeContent);
         })
         .catch((error) => {
-            if (error.isTtyError) {
-                // Prompt couldn't be rendered in the current environment
-            } else {
-                // Something else went wrong
-            }
+            console.error("Error generating README:", error);
         });
 }
 
