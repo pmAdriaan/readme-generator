@@ -90,11 +90,19 @@ function writeToFile(fileName, data) {
 
 // function to initialize program
 function init() {
+    let userFileName = process.argv[2];
+
+    // Check if the provided filename has a .md extension
+    if (userFileName && !userFileName.endsWith('.md')) {
+        console.error("Invalid filename. Please provide a filename with a .md extension.");
+        return;
+    }
+
     inquirer
         .prompt(questions)
         .then((answers) => {
             const readmeContent = generateMarkdown(answers);
-            writeToFile("README_TEST.md", readmeContent);
+            writeToFile(userFileName ? userFileName : "NEW_README.md", readmeContent);
         })
         .catch((error) => {
             console.error("Error generating README:", error);
